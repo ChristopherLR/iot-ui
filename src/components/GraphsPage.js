@@ -93,15 +93,15 @@ function GraphsPage(props){
             })
         }
         if (field_data){
-            setDevice_map( field_data.allDevices.nodes);
-            // device_map = field_data.allDevices.nodes;
+            setDevice_map(field_data.allDevices.nodes);
         }
     }, [field_data])
 
     if (!user || !user.user) return <Redirect to="/login" />
 
-    // if (field_loading) return null;
-    // if (field_error) return `FieldError: ${field_error}`;
+    if (user == null) return <Redirect to="/login" />
+    if (field_loading) return "Loading";
+    if (field_error) return `FieldError: ${field_error}`;
     if (!device_map) return "Loading";
     return (
         <>
