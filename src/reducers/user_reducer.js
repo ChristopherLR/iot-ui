@@ -1,5 +1,4 @@
 const user_reducer = (state, action) => {
-  console.log(state, action)
   switch (action.type) {
     case 'LOGIN_USER':
       return {

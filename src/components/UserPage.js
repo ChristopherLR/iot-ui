@@ -9,8 +9,6 @@ import { Redirect, useParams } from 'react-router-dom'
 function UserPage (props) {
     const { user } = useAppContext();
     const { name } = useParams();
-    console.log(user)
-
     if (user.user == null) return <Redirect to="/login" />
 
     return (

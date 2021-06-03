@@ -60,7 +60,6 @@ function LoginPage (props) {
 
   useEffect(() => {
     if (data){
-      console.log(data)
         dispatch({
             type: "LOGIN_USER",
             payload: data.userByUsername,

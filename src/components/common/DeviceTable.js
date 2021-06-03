@@ -2,7 +2,6 @@ import React from 'react'
 import { Table } from 'react-bootstrap'
 
 const entry = (device) => {
-  console.log(device.node.creationDate)
   let [month, date, year] = new Date(device.node.creationDate).toLocaleDateString("en-US").split("/")
   return (
     <tr key={device.node.id}>
@@ -16,7 +15,6 @@ const entry = (device) => {
 function DeviceTable(props) {
   const { devices } = props;
 
-  console.log(devices)
   return (
     <Table striped bordered hover variant="dark">
       <thead>

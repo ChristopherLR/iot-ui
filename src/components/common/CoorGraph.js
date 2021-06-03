@@ -9,15 +9,15 @@ function getAddressFromCoordinates(latitude, longitude) {
     try{
         return JSON.parse(xmlHttp.responseText).items[0].title;
     }catch(e){
-        console.log(e);
         return null;
     }
   }
 function CoorGraph({field}) {
-    // if(field)
-    if(!field || !field.locationDataEntriesByFieldId || !field.locationDataEntriesByFieldId.nodes || !field.locationDataEntriesByFieldId.nodes.length) return null;
-    console.log(field.locationDataEntriesByFieldId);
-    let node = field.locationDataEntriesByFieldId.nodes.reduce((prev, current) => (current.lat && current.lon && new Date(current.entryDate) >= new Date(prev.entryDate) ? current : prev));
+    const { locationDataEntriesByFieldId } = field;
+    if(!field || !locationDataEntriesByFieldId || !locationDataEntriesByFieldId.nodes || !locationDataEntriesByFieldId.nodes.length){
+        return null;
+    } 
+    let node = locationDataEntriesByFieldId.nodes.reduce((prev, current) => (current.lat && current.lon && new Date(current.entryDate) >= new Date(prev.entryDate) ? current : prev));
     
     if(!node || (node.lat == 0 && node.lon == 0)){
         return null
@@ -25,12 +25,12 @@ function CoorGraph({field}) {
     // var location = getAddressFromCoordinates(-33.77, 151.1)
 
     var location = getAddressFromCoordinates(node.lat, node.lon)
-    console.log(location);
     
-    return (<>
+    return (      
+        <div className="card" style={{ width: "48%"}}>
             <div className="card-header">Last recorded position</div>
             <div className="card-body"><p>{location}</p></div>
-            </>
+        </div>
     )
 }
 

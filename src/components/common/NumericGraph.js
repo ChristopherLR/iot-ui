@@ -11,7 +11,6 @@ function NumericGraph({ field }){
         labels.push(new Date(entry.entryDate).toLocaleString('en-GB', {timeZone: 'Australia/Sydney'}));
         entries.push(entry.value)
     })
-    console.log()
     if(!entries.length) { return null }
     const data = {
         labels: labels,
@@ -40,10 +39,10 @@ function NumericGraph({ field }){
           ]
     }
     return (
-        <div>
+        <div className="card" style={{ width: "48%"}}>
             <Line data={data} />
-        </div>
-    )
+            </div>    
+        )
 }
 
 export { NumericGraph };

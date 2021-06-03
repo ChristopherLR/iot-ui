@@ -3,7 +3,7 @@ import { Redirect, useParams } from 'react-router-dom'
 import { gql, useLazyQuery } from '@apollo/client';
 import { Card } from 'react-bootstrap'
 import { useAppContext } from '../contexts'
-import { FieldCards, Header, NumericGraph, CoorGraph, BaarGraph } from './common'
+import { JsonGraphs, Header, NumericGraph, CoorGraph } from './common'
 
 const entriesq = gql`
 query Entriesq($userId: Int, $numeric_count: Int = 100) {
@@ -46,24 +46,21 @@ query Entriesq($userId: Int, $numeric_count: Int = 100) {
   }
 }
   `
+
   const display_field = (field, i) => {
     const { valueType } = field
+
     if (valueType == 'NUMERIC') {
          return (
-        <Card key={'field'+i} style={{ width: "48%"}}>
-            <NumericGraph field={field}/>
-        </Card> )
+            <NumericGraph key={'field'+i}  field={field}/>
+         )
     }else if (valueType == 'COORDINATE') {
         return (
-        <Card key={'field'+i} style={{ width: "48%"}}>
-            <CoorGraph field={field}/>
-        </Card>
+            <CoorGraph key={'field'+i}  field={field}/>
         )
     }else if(valueType == 'JSON'){
       return (
-        <Card key={'field'+i} style={{ width: "48%"}}>
-            <CoorGraph field={field}/>
-        </Card>      
+            <JsonGraphs key={'field'+i} field={field}/>
         )
     }
     return null
@@ -112,7 +109,6 @@ function GraphsPage(props){
             <div style={{ display: 'flex', justifyContent: 'center'}}>
                 <div style={{ width: "80%" }}>
                     { device_map.map((x,i) => display_graphs(x,i)) }
-                    {/* <FieldCards devices={device_map}></FieldCards> */}
                 </div>
             </div>
         </>

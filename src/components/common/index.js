@@ -2,4 +2,4 @@ export * from './Header';
 export * from './DeviceTable';
 export * from './NumericGraph';
 export * from './CoorGraph';
-export * from './BarGraph';
+export * from './jsonGraphs';
