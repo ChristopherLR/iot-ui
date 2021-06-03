@@ -15,8 +15,11 @@ function getAddressFromCoordinates(latitude, longitude) {
   }
 function CoorGraph({field}) {
     // if(field)
+    if(!field || !field.locationDataEntriesByFieldId || !field.locationDataEntriesByFieldId.nodes || !field.locationDataEntriesByFieldId.nodes.length) return null;
+    console.log(field.locationDataEntriesByFieldId);
     let node = field.locationDataEntriesByFieldId.nodes.reduce((prev, current) => (current.lat && current.lon && new Date(current.entryDate) >= new Date(prev.entryDate) ? current : prev));
-    if(!node){
+    
+    if(!node || (node.lat == 0 && node.lon == 0)){
         return null
     }
     // var location = getAddressFromCoordinates(-33.77, 151.1)

@@ -3,11 +3,11 @@ import { Bar } from 'react-chartjs-2'
 
 function BarGraph({ field }){
     const { jsonDataEntriesByFieldId, fieldName } = field;
-    const entries = {};
-    const labels = [];
+    var entries = {};
+    var labels = [];
     if(!jsonDataEntriesByFieldId || !jsonDataEntriesByFieldId.nodes) return null
 
-    keys = Object.entries(jsonDataEntriesByFieldId.nodes[0]).map(x => x[0]);
+    const keys = Object.entries(jsonDataEntriesByFieldId.nodes[0]).map(x => x[0]);
     entries = keys.forEach(x => entries[entries.length-1] = []);
     jsonDataEntriesByFieldId.nodes.foreach((entry) => {
         labels.push(new Date(entry.entryDate).toLocaleString('en-GB', { timeZone: 'Australia/Sydney'}));

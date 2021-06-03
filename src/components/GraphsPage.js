@@ -3,7 +3,7 @@ import { Redirect, useParams } from 'react-router-dom'
 import { gql, useLazyQuery } from '@apollo/client';
 import { Card } from 'react-bootstrap'
 import { useAppContext } from '../contexts'
-import { FieldCards, Header, NumericGraph, CoorGraph } from './common'
+import { FieldCards, Header, NumericGraph, CoorGraph, BaarGraph } from './common'
 
 const entriesq = gql`
 query Entriesq($userId: Int, $numeric_count: Int = 100) {
@@ -59,7 +59,13 @@ query Entriesq($userId: Int, $numeric_count: Int = 100) {
             <CoorGraph field={field}/>
         </Card>
         )
-    } 
+    }else if(valueType == 'JSON'){
+      return (
+        <Card key={'field'+i} style={{ width: "48%"}}>
+            <CoorGraph field={field}/>
+        </Card>      
+        )
+    }
     return null
   }
   
