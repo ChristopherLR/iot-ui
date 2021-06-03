@@ -42,7 +42,7 @@ function JsonGraphs(props){
 
     return (
         <div className="card" style={{ width: "48%"}}>
-            <Bar data={data} />
+            <Bar data={data} options={{animation: { duration: 0}}} />
         </div>
     )
 }

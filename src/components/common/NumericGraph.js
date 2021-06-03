@@ -40,7 +40,7 @@ function NumericGraph({ field }){
     }
     return (
         <div className="card" style={{ width: "48%"}}>
-            <Line data={data} />
+            <Line data={data} options={{animation: {duration: 0}}} />
             </div>    
         )
 }

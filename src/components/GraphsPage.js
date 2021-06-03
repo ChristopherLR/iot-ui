@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect, useParams } from 'react-router-dom'
-import { gql, useLazyQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { Card } from 'react-bootstrap'
 import { useAppContext } from '../contexts'
 import { JsonGraphs, Header, NumericGraph, CoorGraph } from './common'
@@ -45,7 +45,7 @@ query Entriesq($userId: Int, $numeric_count: Int = 100) {
     }
   }
 }
-  `
+`
 
   const display_field = (field, i) => {
     const { valueType } = field
@@ -80,35 +80,24 @@ query Entriesq($userId: Int, $numeric_count: Int = 100) {
 function GraphsPage(props){
     const { user } = useAppContext();
     const { device } = useParams();
-    const [ getEntries, { loading: field_loading, data: field_data, error: field_error }] = useLazyQuery(entriesq)
-    const [ device_map, setDevice_map] = useState('');
-
-    useEffect(() => {
-        if (user && user.user){
-            getEntries({
-                variables: {
-                    userId: user.user.id,
-                    numeric_count: 100
-                }
-            })
-        }
-        if (field_data){
-            setDevice_map(field_data.allDevices.nodes);
-        }
-    }, [field_data])
+    const { loading: field_loading, data: field_data, error: field_error } = useQuery(entriesq, {
+        variables: {
+            userId: user.user.id,
+            numeric_count: 100
+        },
+        pollInterval: 500,
+    })
 
     if (!user || !user.user) return <Redirect to="/login" />
-
     if (user == null) return <Redirect to="/login" />
     if (field_loading) return "Loading";
     if (field_error) return `FieldError: ${field_error}`;
-    if (!device_map) return "Loading";
     return (
         <>
             <Header user={user} />
             <div style={{ display: 'flex', justifyContent: 'center'}}>
                 <div style={{ width: "80%" }}>
-                    { device_map.map((x,i) => display_graphs(x,i)) }
+                    {field_data.allDevices.nodes.map((x,i) => display_graphs(x,i)) }
                 </div>
             </div>
         </>
