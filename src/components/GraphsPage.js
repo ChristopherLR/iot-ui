@@ -75,20 +75,19 @@ function GraphsPage(props){
     const [ getEntries, { loading: field_loading, data: field_data, error: field_error }] = useLazyQuery(entriesq)
     const [ device_map, setDevice_map] = useState('');
 
-    console.log(user)
     useEffect(() => {
         console.log("useEffect");
         if (user){
+            console.log(user.user.id)
             getEntries({
                 variables: {
-                    query: {
-                        userId: user.id
-                    },
+                    userId: user.user.id,
                     numeric_count: 100
                 }
             })
         }
         if (field_data){
+            console.log(field_data)
             setDevice_map( field_data.allDevices.nodes);
             // device_map = field_data.allDevices.nodes;
         }
