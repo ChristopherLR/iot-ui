@@ -63,21 +63,11 @@ function DevicesPage(props){
     })
       
     const [ updateDevice, { data: mutate_data }] = useMutation(updateUserId)
-    const [ allDev, setAllDev] = useState('');
-    if(user && user.user && user.user.id) {userId = user.user.id;}
-    
-    // useEffect(() => {
-    //     if (field_data){
-    //         console.log(field_data);
-    //         setAllDev(field_data.allDevices.nodes);
-    //     }
-    // }, [field_data])
 
+    if(user && user.user && user.user.id) {userId = user.user.id;}
     if (!user || !user.user) return <Redirect to="/login" />
-    
-    // if (field_loading) return null;
-    // if (field_error) return `FieldError: ${field_error}`;
-    // if (!allDev) return "Loading";
+    if (field_loading) return "Loading";
+
     return (
         <>
             <Header user={user.user} />
