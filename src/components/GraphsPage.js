@@ -70,26 +70,19 @@ query Entriesq($userId: Int, $numeric_count: Int = 100) {
   }
 
 function GraphsPage(props){
-    const user = {
-        "firstname": "daniel",
-        "lastname": "watson",
-        "password": "secret",
-        "username": "daniel",
-        "rowId": 1,
-        "id": "WyJ1c2VycyIsMl0="
-      };
-    // const { user } = useAppContext();
+    const { user } = useAppContext();
     const { device } = useParams();
     const [ getEntries, { loading: field_loading, data: field_data, error: field_error }] = useLazyQuery(entriesq)
     const [ device_map, setDevice_map] = useState('');
 
+    console.log(user)
     useEffect(() => {
         console.log("useEffect");
         if (user){
             getEntries({
                 variables: {
                     query: {
-                        userId: user.rowId
+                        userId: user.id
                     },
                     numeric_count: 100
                 }

@@ -5,20 +5,42 @@ import { useAppContext } from '../contexts/state'
 import "../styles/app.scss"
 import { Redirect, useHistory } from 'react-router-dom'
 
+// const query = gql`
+//   query User($username: String!, $password: String!){
+//     user(username: $username, password: $password){
+//       id
+//       username
+//       firstname
+//       lastname
+//       devices {
+//         id
+//         device_name
+//         creation_date
+//       }
+//     }
+//   }
+// `
+
 const query = gql`
-  query User($username: String!, $password: String!){
-    user(username: $username, password: $password){
-      id
-      username
-      firstname
-      lastname
-      devices {
-        id
-        device_name
-        creation_date
+query MyQuery($username: String!) {
+  userByUsername(username: $username) {
+    firstname
+    id
+    lastname
+    nodeId
+    username
+    devicesByUserId {
+      edges {
+        node {
+          id
+          creationDate
+          deviceKey
+          deviceName
+        }
       }
     }
   }
+}
 `
 
 function LoginPage (props) {
@@ -31,17 +53,17 @@ function LoginPage (props) {
   function handle_submit(user, pass){
       getUser({
           variables: {
-              username: user,
-              password: pass 
+              username: user
           }
       })
   }
 
   useEffect(() => {
     if (data){
+      console.log(data)
         dispatch({
             type: "LOGIN_USER",
-            payload: data.user,
+            payload: data.userByUsername,
         })
     }
   }, [loading])

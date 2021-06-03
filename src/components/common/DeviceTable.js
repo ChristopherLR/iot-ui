@@ -2,12 +2,13 @@ import React from 'react'
 import { Table } from 'react-bootstrap'
 
 const entry = (device) => {
-  console.log(device)
+  console.log(device.node.creationDate)
+  let [month, date, year] = new Date(device.node.creationDate).toLocaleDateString("en-US").split("/")
   return (
-    <tr>
-      <td>{device.id}</td>
-      <td>{device.device_name}</td>
-      <td>{new Date(Number(device.creation_date)).toString()}</td>
+    <tr key={device.node.id}>
+      <td>{device.node.id}</td>
+      <td>{device.node.deviceName}</td>
+      <td>{date}/{month}/{year}</td>
     </tr>
   )
 }
@@ -15,6 +16,7 @@ const entry = (device) => {
 function DeviceTable(props) {
   const { devices } = props;
 
+  console.log(devices)
   return (
     <Table striped bordered hover variant="dark">
       <thead>

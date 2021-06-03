@@ -18,7 +18,7 @@ function UserPage (props) {
             <Header user={user.user}/>
             <div>
                 <br />
-                <DeviceTable devices={user.user.devices}/>
+                <DeviceTable devices={user.user.devicesByUserId.edges}/>
             </div>
         </>
     )
