@@ -9,7 +9,7 @@ function Header(props) {
     return (
         <Navbar bg="dark" variant="dark" className="header">
             <Nav className="mr-auto">
-                <Nav.Link onClick={() => history.push("/user/home")}>{user.username}</Nav.Link>
+                <Nav.Link onClick={() => history.push("/user/home")}>{user.username }</Nav.Link>
                 <Nav.Link onClick={() => history.push("/user/devices")}>Update Devices</Nav.Link>
                 <Nav.Link onClick={() => history.push("/user/account")}>Update Account</Nav.Link>
                 <Nav.Link onClick={() => history.push("/user/about")}>About</Nav.Link>
