@@ -3,67 +3,72 @@ import { Redirect, useParams } from 'react-router-dom'
 import { gql, useLazyQuery } from '@apollo/client';
 import { Card } from 'react-bootstrap'
 import { useAppContext } from '../contexts'
-import { FieldCards, Header, NumericGraph } from './common'
+import { FieldCards, Header, NumericGraph, CoorGraph } from './common'
 
 const entriesq = gql`
 query Entriesq($userId: Int, $numeric_count: Int = 100) {
-    allDevices(condition: { userId: $userId }) {
-      nodes {
-        deviceName
-        deviceKey
-        fieldEntriesByDeviceId {
-          nodes {
-            fieldName
-            valueType
-            jsonDataEntriesByFieldId(first: $numeric_count) {
-              nodes {
-                value
-                entryDate
-              }
+  allDevices(condition: {userId: $userId}) {
+    nodes {
+      deviceName
+      deviceKey
+      fieldEntriesByDeviceId {
+        nodes {
+          fieldName
+          valueType
+          jsonDataEntriesByFieldId(last: $numeric_count, orderBy: ENTRY_DATE_ASC) {
+            nodes {
+              value
+              entryDate
             }
-            locationDataEntriesByFieldId(first: $numeric_count) {
-              nodes {
-                entryDate
-                lat
-                lon
-              }
+          }
+          locationDataEntriesByFieldId(last: $numeric_count, orderBy: ENTRY_DATE_ASC) {
+            nodes {
+              entryDate
+              lat
+              lon
             }
-            numericDataEntriesByFieldId(first: $numeric_count) {
-              nodes {
-                entryDate
-                value
-              }
+          }
+          numericDataEntriesByFieldId(last: $numeric_count, orderBy: ENTRY_DATE_ASC) {
+            nodes {
+              entryDate
+              value
             }
-            textDataEntriesByFieldId(first: $numeric_count) {
-              nodes {
-                entryDate
-                value
-              }
+          }
+          textDataEntriesByFieldId(last: $numeric_count, orderBy: ENTRY_DATE_ASC) {
+            nodes {
+              entryDate
+              value
             }
           }
         }
       }
     }
   }
+}
   `
-  const display_field = (field) => {
+  const display_field = (field, i) => {
     const { valueType } = field
-    console.log(field);
-    if (valueType == 'NUMERIC') return (
-        <Card style={{ width: "48%"}}>
+    if (valueType == 'NUMERIC') {
+         return (
+        <Card key={'field'+i} style={{ width: "48%"}}>
             <NumericGraph field={field}/>
+        </Card> )
+    }else if (valueType == 'COORDINATE') {
+        return (
+        <Card key={'field'+i} style={{ width: "48%"}}>
+            <CoorGraph field={field}/>
         </Card>
-    )
+        )
+    } 
     return null
   }
   
   const display_graphs = (device, index) => {
-    console.log(device.deviceName);
     return (
-        <div class="card my-3" key={index}>
+        <div className="card my-3" key={index}>
             <Card.Header>{device.deviceName}</Card.Header>
             <Card.Body style={{ display: 'flex', justifyContent: 'space-around', flexFlow: 'row wrap'}}>
-                {device.fieldEntriesByDeviceId.nodes.map(entry => display_field(entry)) }
+                {device.fieldEntriesByDeviceId.nodes.map((entry, i) => display_field(entry, i)) }
             </Card.Body>
         </div>
     )
@@ -76,9 +81,7 @@ function GraphsPage(props){
     const [ device_map, setDevice_map] = useState('');
 
     useEffect(() => {
-        console.log("useEffect");
-        if (user){
-            console.log(user.user.id)
+        if (user && user.user){
             getEntries({
                 variables: {
                     userId: user.user.id,
@@ -87,18 +90,16 @@ function GraphsPage(props){
             })
         }
         if (field_data){
-            console.log(field_data)
             setDevice_map( field_data.allDevices.nodes);
             // device_map = field_data.allDevices.nodes;
         }
     }, [field_data])
 
+    if (!user || !user.user) return <Redirect to="/login" />
 
-    if (user == null) return <Redirect to="/login" />
     // if (field_loading) return null;
     // if (field_error) return `FieldError: ${field_error}`;
     if (!device_map) return "Loading";
-
     return (
         <>
             <Header user={user} />

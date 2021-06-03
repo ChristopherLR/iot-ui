@@ -5,12 +5,14 @@ function NumericGraph({ field }){
     const { numericDataEntriesByFieldId, fieldName } = field;
     const entries = [];
     const labels = [];
+    if(!numericDataEntriesByFieldId || !numericDataEntriesByFieldId.nodes) return null
+
     numericDataEntriesByFieldId.nodes.map((entry) => {
-        labels.push(new Date(entry.entryDate).toLocaleString('en-GB'));
+        labels.push(new Date(entry.entryDate).toLocaleString('en-GB', {timeZone: 'Australia/Sydney'}));
         entries.push(entry.value)
     })
     console.log()
-    // if(!entries.length) { return null }
+    if(!entries.length) { return null }
     const data = {
         labels: labels,
         datasets: [
