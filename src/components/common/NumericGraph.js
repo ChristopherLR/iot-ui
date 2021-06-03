@@ -2,19 +2,20 @@ import React from 'react'
 import { Line } from 'react-chartjs-2'
 
 function NumericGraph({ field }){
-    const { numeric_data_entries, field_name } = field;
+    const { numericDataEntriesByFieldId, fieldName } = field;
     const entries = [];
     const labels = [];
-    numeric_data_entries.map((entry) => {
-        labels.push(new Date(Number(entry.entry_date)).toLocaleString('en-GB', { timeZone: 'UTC'}));
+    numericDataEntriesByFieldId.nodes.map((entry) => {
+        labels.push(new Date(entry.entryDate).toLocaleString('en-GB'));
         entries.push(entry.value)
     })
-
+    console.log()
+    // if(!entries.length) { return null }
     const data = {
         labels: labels,
         datasets: [
             {
-              label: field_name,
+              label: fieldName,
               fill: false,
               lineTension: 0.1,
               backgroundColor: 'rgba(75,192,192,0.4)',
